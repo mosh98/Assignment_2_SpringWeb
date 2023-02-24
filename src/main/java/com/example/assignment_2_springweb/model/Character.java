@@ -6,7 +6,7 @@ import lombok.ToString;
 
 @Getter // Lombok
 @ToString // Lombok
-
+// @Entity
 public class Character {
     /**
      * Character
