@@ -6,7 +6,7 @@ import lombok.*;
 
 @Getter // Lombok
 @ToString // Lombok
-//@RequiredArgsConstructor // Lombok
+@RequiredArgsConstructor // Lombok
 @NoArgsConstructor // Lombok
 @Entity
 public class Characters {

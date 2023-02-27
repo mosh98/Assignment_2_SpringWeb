@@ -13,10 +13,15 @@ import java.util.Optional;
 @Repository
 public interface CharacterRepository extends JpaRepository<Characters, Integer> {
 
-    //@Query("SELECT * FROM characters WHERE alias = ?")
-    //Optional<Characters> findByAlias(String alias);
 
     Optional<Characters> findByAlias(String alias);
+
+    Optional<Characters> findByFullName(String fullName);
+
+    List<Characters> findCharactersByGender(String gender);
+
+    //@Query
+    //Optional<Characters> c
 
 
 }
