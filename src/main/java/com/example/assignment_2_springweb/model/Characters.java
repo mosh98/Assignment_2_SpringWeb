@@ -4,11 +4,15 @@ package com.example.assignment_2_springweb.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Getter // Lombok
 @ToString // Lombok
 @NoArgsConstructor // Lombok
 @Entity
 public class Characters {
+    //TODO: Check if the movie_charatcer table only contains unique rows.
+
     /**
      * Character
      * Autoincremented Id
@@ -36,9 +40,8 @@ public class Characters {
     @Column(name = "picture",length = 255)
     private String picture;
 
-    @ManyToOne
-    @JoinColumn(name="movie_id")
-    private Movie movie;
+    @ManyToMany(mappedBy= "characters")
+    private Set<Movie> movie;
 
 
 }

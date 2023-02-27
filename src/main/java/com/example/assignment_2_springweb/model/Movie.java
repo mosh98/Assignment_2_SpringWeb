@@ -34,7 +34,8 @@ public class Movie {
 
     //@ManyToMany(mappedBy="characters")
     //@JoinColumn(name="movie_characters", joinColumns = { @JoinColumns( name = "movie_id")}, inverseJoinColumns  = {@JoinColumn(name = "character_id") })
-    @OneToMany(mappedBy="movie")
+    @ManyToMany
+    @JoinTable(name = "movie_characters", joinColumns = @JoinColumn(name = "movie_id"),inverseJoinColumns = @JoinColumn(name = "character_id") )
     private Set<Characters> characters;
 
 
