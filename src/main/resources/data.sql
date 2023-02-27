@@ -1,0 +1,24 @@
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Iron Man', 'Tony Stark', 'Male', 'https://example.com/iron_man.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Captain America', 'Steve Rogers', 'Male', 'https://example.com/captain_america.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Black Widow', 'Natasha Romanoff', 'Female', 'https://example.com/black_widow.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Thor', 'Thor Odinson', 'Male', 'https://example.com/thor.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Hulk', 'Bruce Banner', 'Male', 'https://example.com/hulk.jpg');
+
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Spider-Man', 'Peter Parker', 'Male', 'https://example.com/spider_man.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Wolverine', 'Logan', 'Male', 'https://example.com/wolverine.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Storm', 'Ororo Munroe', 'Female', 'https://example.com/storm.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Beast', 'Hank McCoy', 'Male', 'https://example.com/beast.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Cyclops', 'Scott Summers', 'Male', 'https://example.com/cyclops.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Jean Grey', 'Jean Grey', 'Female', 'https://example.com/jean_grey.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Rogue', 'Anna Marie', 'Female', 'https://example.com/rogue.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Gambit', 'Remy LeBeau', 'Male', 'https://example.com/gambit.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Professor X', 'Charles Xavier', 'Male', 'https://example.com/professor_x.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Magneto', 'Erik Lehnsherr', 'Male', 'https://example.com/magneto.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Mystique', 'Raven Darkhölme', 'Female', 'https://example.com/mystique.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Iceman', 'Bobby Drake', 'Male', 'https://example.com/iceman.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Angel', 'Warren Worthington III', 'Male', 'https://example.com/angel.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Nightcrawler', 'Kurt Wagner', 'Male', 'https://example.com/nightcrawler.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Colossus', 'Piotr Rasputin', 'Male', 'https://example.com/colossus.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Deadpool', 'Wade Wilson', 'Male', 'https://example.com/deadpool.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Daredevil', 'Matt Murdock', 'Male', 'https://example.com/daredevil.jpg');
+INSERT INTO characters (alias, full_name, gender, picture) VALUES ('Elektra', 'Elektra Natchios', 'Female', 'https://example.com/elektra.jpg');
