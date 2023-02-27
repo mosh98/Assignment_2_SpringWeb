@@ -39,5 +39,10 @@ public class Movie {
     private Set<Characters> characters;
 
 
+    @ManyToOne
+    @JoinColumn(name = "franchise_id")
+    private Franchise franchise;
+
+
 
 }
