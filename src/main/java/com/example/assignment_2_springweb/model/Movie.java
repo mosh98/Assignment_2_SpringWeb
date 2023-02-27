@@ -1,8 +1,17 @@
 package com.example.assignment_2_springweb.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-@Entity     // Turn class into entity. This will require a primary key.
+import java.util.Set;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@Entity  // Turn class into entity. This will require a primary key.
 public class Movie {
     @Id     // primary key annotation.
     @GeneratedValue(strategy = GenerationType.IDENTITY) // autogenerate id
@@ -22,4 +31,12 @@ public class Movie {
     private String poster;
     @Column(name = "trailer_link", length = 100)
     private String trailer;
+
+    //@ManyToMany(mappedBy="characters")
+    //@JoinColumn(name="movie_characters", joinColumns = { @JoinColumns( name = "movie_id")}, inverseJoinColumns  = {@JoinColumn(name = "character_id") })
+    @OneToMany(mappedBy="movie")
+    private Set<Characters> characters;
+
+
+
 }

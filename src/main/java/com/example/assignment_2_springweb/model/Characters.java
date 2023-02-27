@@ -6,7 +6,6 @@ import lombok.*;
 
 @Getter // Lombok
 @ToString // Lombok
-@RequiredArgsConstructor // Lombok
 @NoArgsConstructor // Lombok
 @Entity
 public class Characters {
@@ -36,6 +35,10 @@ public class Characters {
     @NonNull
     @Column(name = "picture",length = 255)
     private String picture;
+
+    @ManyToOne
+    @JoinColumn(name="movie_id")
+    private Movie movie;
 
 
 }
