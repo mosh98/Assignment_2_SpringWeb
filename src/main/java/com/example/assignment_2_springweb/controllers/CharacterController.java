@@ -20,9 +20,8 @@ public class CharacterController {
 
     //Create
     //create new character
-
     @Autowired
-public CharacterController(CharacterService characterService){
+    public CharacterController(CharacterService characterService){
         this.characterService = characterService;
 
     }
@@ -36,8 +35,6 @@ public CharacterController(CharacterService characterService){
     public ResponseEntity<?> add(@RequestBody Characters characters){
         Characters savedCharacter = characterService.add(characters);
         //CharacterDTO characterDTO = characterMapper.characterToCharacterDTO(savedCharacter);
-
-
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
