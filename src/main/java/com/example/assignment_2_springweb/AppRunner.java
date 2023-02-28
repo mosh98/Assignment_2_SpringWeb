@@ -22,10 +22,10 @@ public class AppRunner implements ApplicationRunner {
     @Override
     @Transactional
     public void run(ApplicationArguments args) throws Exception {
-
+        System.out.println("Hello");
         //System.out.println(characterRepository.findByAlias("Iron Man"));
         //characterRepository.findAll().forEach(System.out::println);
-        characterRepository.findCharactersByGender("Male").forEach(System.out::println);
+        //characterRepository.findCharactersByGender("Male").forEach(System.out::println);
 
     }
 }
