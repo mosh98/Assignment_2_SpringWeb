@@ -5,12 +5,13 @@ import lombok.Data;
 
 import java.util.Set;
 
+
 @Data
 public class CharacterDTO {
     private int id;
-    private String fullname;
+    private String fullName;
     private String alias;
     private String gender;
     private String picture;
-    private Set<Movie> movie;
+    private Set<Integer> movie;
 }

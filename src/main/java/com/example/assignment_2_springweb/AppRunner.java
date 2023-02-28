@@ -9,10 +9,10 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.*;
 
-@Component
-public class AppRunner implements ApplicationRunner {
+//@Component
+public class AppRunner /*implements ApplicationRunner*/ {
 
-    private final CharacterRepository characterRepository;
+    /*private final CharacterRepository characterRepository;
 
    @Autowired
     public AppRunner(CharacterRepository characterRepository) {
@@ -27,5 +27,5 @@ public class AppRunner implements ApplicationRunner {
         //characterRepository.findAll().forEach(System.out::println);
         //characterRepository.findCharactersByGender("Male").forEach(System.out::println);
 
-    }
+    }*/
 }
