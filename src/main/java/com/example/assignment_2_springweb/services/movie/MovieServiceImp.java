@@ -34,6 +34,7 @@ public class MovieServiceImp implements MovieService{
 
     @Override
     public Movie update(Movie entity) {
+        //TODO is this right?
         return movieRepository.save(entity);
     }
 
@@ -46,20 +47,19 @@ public class MovieServiceImp implements MovieService{
                 // Set relationships to null, so we can delete without referential problems
                 Movie movieToDelete = optionalMovie.get();
                 movieToDelete.setFranchise(null);
-                //TODO Fix to set only movie_id to Null
+                //TODO Fix to set only movie_id to Null not clear all
                 movieToDelete.setCharacters(null);
 
                // movieToDelete.getCharacters().forEach(s -> s.setMovie(null));
                 movieRepository.deleteById(id);
-            } else{
+            } else {
                 throw new RuntimeException("No movie exist to delete");
-
             }
     }
 
     @Override
-    public boolean exists(Integer integer) {
-        return movieRepository.existsById(integer);
+    public boolean exists(Integer id) {
+        return movieRepository.existsById(id);
     }
 
 /*    @Override
