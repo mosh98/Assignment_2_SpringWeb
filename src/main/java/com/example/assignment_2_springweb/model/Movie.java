@@ -43,6 +43,7 @@ public class Movie {
     @JoinColumn(name = "franchise_id")
     private Franchise franchise;
 
+    // TODO change method name
     @JsonGetter("franchise")
     public Integer jsonGetProfessor() {
         if(franchise != null)
@@ -50,6 +51,7 @@ public class Movie {
         return null;
     }
 
+    // TODO change method name
     @JsonGetter("characters")
     public List<Integer> jsonGetSubjects() {
         if(characters != null)
