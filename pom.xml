@@ -13,9 +13,10 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>Assignment_2_SpringWeb</name>
     <description>Assignment_2_SpringWeb</description>
+
+
     <properties>
         <java.version>17</java.version>
-        <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
     </properties>
     <dependencies>
         <dependency>
@@ -42,11 +43,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>${org.mapstruct.version}</version>
-        </dependency>
+
 
     </dependencies>
 
@@ -64,6 +61,7 @@
                     </excludes>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 

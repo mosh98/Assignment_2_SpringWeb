@@ -2,9 +2,11 @@ package com.example.assignment_2_springweb.services.character;
 
 import com.example.assignment_2_springweb.model.Characters;
 import com.example.assignment_2_springweb.repositories.CharacterRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
+@Service
 public class CharacterServiceImpl implements CharacterService {
     private final CharacterRepository characterRepository;
 

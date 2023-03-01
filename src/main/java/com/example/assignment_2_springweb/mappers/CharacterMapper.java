@@ -2,13 +2,15 @@ package com.example.assignment_2_springweb.mappers;
 
 import com.example.assignment_2_springweb.model.Characters;
 import com.example.assignment_2_springweb.model.dtos.CharacterDTO;
-import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
 
+
+//@Mapper(componentModel = "spring")
 public interface CharacterMapper {
+
     /**
-     * This mapper is made to convert between character model to DTO object
+     *Class not configured yet
+     *  This mapper is made to convert between character model to DTO object
      * TO hide certain infromation......
      */
 

@@ -1,12 +1,14 @@
 package com.example.assignment_2_springweb.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Set;
 
 @Getter // Lombok
+@Setter // Lombok
 @ToString // Lombok
 @NoArgsConstructor // Lombok
 @Entity
@@ -41,6 +43,7 @@ public class Characters {
     private String picture;
 
     @ManyToMany(mappedBy= "characters")
+    @JsonBackReference
     private Set<Movie> movie;
 
 
