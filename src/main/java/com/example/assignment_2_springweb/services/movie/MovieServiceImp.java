@@ -49,9 +49,9 @@ public class MovieServiceImp implements MovieService{
                 Movie movieToDelete = optionalMovie.get();
                 movieToDelete.setFranchise(null);
                 //TODO Fix to set only movie_id to Null not clear all - Hibernate: delete from movie_characters where movie_id=?- not right i think
-                movieToDelete.setCharacters(null);
+                //movieToDelete.setCharacters(null);
 
-               // movieToDelete.getCharacters().forEach(s -> s.setMovie(null));
+               movieToDelete.getCharacters().forEach(s -> s.setMovie(null));
                 movieRepository.deleteById(id);
             } else {
                 throw new RuntimeException("No movie exist to delete");

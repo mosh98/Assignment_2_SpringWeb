@@ -89,6 +89,28 @@ public class CharacterController {
     //delete
     @DeleteMapping("{id}")
     public String delete(@PathVariable int id){
+        Optional<Characters> optionalCharacter = Optional.ofNullable(characterService.getById(id));
+
+        if(optionalCharacter.isPresent()){
+
+            Characters characters = optionalCharacter.get();
+            //characters.getMovie().forEach(s->s.setCharacters(null));
+
+
+            //Set<Movie> movieSet =  characters.getMovie(); //get movies this character
+
+            characters.setMovie(null);
+
+   /*         for (Movie movie : movieSet) {
+                Set<Characters> movieChars = movie.getCharacters();
+                for (Characters movieChar : movieChars) {
+                    if(movieChar.getId() ==characters.getId() ){
+                        //take away
+                    }
+                }
+            }*/
+
+        }else throw new RuntimeException("No character exist");
         //set
         return characterService.deleteById(id);
     }
