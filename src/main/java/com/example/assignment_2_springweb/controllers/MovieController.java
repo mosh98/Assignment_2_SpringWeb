@@ -39,4 +39,13 @@ public class MovieController {
         // return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PutMapping("{id}") // PUT: localhost:8080/api/v1/students/1
+    public ResponseEntity<Movie> update(@RequestBody Movie movie, @PathVariable int id) {
+        // Validates if body is correct
+        if(id != movie.getId())
+            return ResponseEntity.badRequest().build();
+        movieService.update(movie);
+        return ResponseEntity.noContent().build();
+    }
+
 }
