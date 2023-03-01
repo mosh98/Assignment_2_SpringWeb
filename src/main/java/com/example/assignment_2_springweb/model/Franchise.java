@@ -1,6 +1,7 @@
 package com.example.assignment_2_springweb.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,6 +34,7 @@ public class Franchise {
     private String description;
 
     @OneToMany(mappedBy = "franchise")
+    @JsonBackReference
     private Set<Movie> movies;
 
 
