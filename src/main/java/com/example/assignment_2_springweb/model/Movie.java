@@ -2,10 +2,7 @@ package com.example.assignment_2_springweb.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
@@ -33,18 +30,27 @@ public class Movie {
     @Column(name = "trailer_link", length = 100)
     private String trailer;
 
-    //@ManyToMany(mappedBy="characters")
-    //@JoinColumn(name="movie_characters", joinColumns = { @JoinColumns( name = "movie_id")}, inverseJoinColumns  = {@JoinColumn(name = "character_id") })
     @ManyToMany
-    @JoinTable(name = "movie_characters", joinColumns = @JoinColumn(name = "movie_id"),inverseJoinColumns = @JoinColumn(name = "character_id") )
+    @JsonManagedReference
+    @JoinTable(name = "movie_characters", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "character_id"))
     private Set<Characters> characters;
 
-
     @ManyToOne
-    @JoinColumn(name = "franchise_id")
     @JsonManagedReference
+    @JoinColumn(name = "franchise_id")
     private Franchise franchise;
 
-
-
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", genre='" + genre + '\'' +
+                ", release=" + release +
+                ", director='" + director + '\'' +
+                ", poster='" + poster + '\'' +
+                ", trailer='" + trailer + '\'' +
+                ", franchise=" + franchise +
+                '}';
+    }
 }
