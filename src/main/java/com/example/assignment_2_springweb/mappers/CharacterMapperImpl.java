@@ -1,6 +1,4 @@
 package com.example.assignment_2_springweb.mappers;
-
-
 import com.example.assignment_2_springweb.model.Characters;
 import com.example.assignment_2_springweb.model.Movie;
 import com.example.assignment_2_springweb.model.dtos.CharacterDTO;
@@ -14,7 +12,9 @@ public class CharacterMapperImpl implements CharacterMapper{
 
     @Override
     public CharacterDTO toCharacterDto(Characters character) {
+
         CharacterDTO dto = new CharacterDTO();
+
         dto.setId(character.getId());
         dto.setFullName(character.getFullName());
         dto.setAlias(character.getAlias());
@@ -32,6 +32,7 @@ public class CharacterMapperImpl implements CharacterMapper{
     @Override
     public Characters toCharacters(CharacterDTO dto) {
         Characters characters = new Characters();
+
         characters.setId(dto.getId());
         characters.setFullName(dto.getFullName());
         characters.setAlias(dto.getAlias());
@@ -40,4 +41,6 @@ public class CharacterMapperImpl implements CharacterMapper{
 
         return characters;
     }
+
+
 }
