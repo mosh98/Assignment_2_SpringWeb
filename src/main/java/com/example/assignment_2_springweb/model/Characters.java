@@ -1,7 +1,6 @@
 package com.example.assignment_2_springweb.model;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,6 +10,7 @@ import java.util.Set;
 @Setter // Lombok
 @ToString // Lombok
 @NoArgsConstructor // Lombok
+@AllArgsConstructor
 @Entity
 public class Characters {
     //TODO: Check if the movie_charatcer table only contains unique rows.
@@ -43,7 +43,6 @@ public class Characters {
     private String picture;
 
     @ManyToMany(mappedBy= "characters")
-    @JsonBackReference
     private Set<Movie> movie;
 
 

@@ -1,10 +1,8 @@
 package com.example.assignment_2_springweb.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.Set;
@@ -42,7 +40,6 @@ public class Movie {
 
     @ManyToOne
     @JoinColumn(name = "franchise_id")
-    @JsonManagedReference
     private Franchise franchise;
 
 

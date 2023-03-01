@@ -1,45 +1,44 @@
 package com.example.assignment_2_springweb.controllers;
 
-import com.example.assignment_2_springweb.mappers.CharacterMapper;
-import com.example.assignment_2_springweb.mappers.CharacterMapperImpl;
+
 import com.example.assignment_2_springweb.model.Characters;
 import com.example.assignment_2_springweb.model.dtos.CharacterDTO;
-import com.example.assignment_2_springweb.repositories.CharacterRepository;
+import com.example.assignment_2_springweb.mappers.CharacterMapper;
+
 import com.example.assignment_2_springweb.services.character.CharacterService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
-@RequestMapping(path = "/character")
-
+@RequestMapping("/character")
+@RequiredArgsConstructor
 public class CharacterController {
-    public final CharacterService characterService;
 
-    //Create
-    //create new character
-    @Autowired
-    public CharacterController(CharacterService characterService){
-        this.characterService = characterService;
+    private final CharacterService characterService;
+    private final CharacterMapper characterMapper;
 
+    //get
+    @GetMapping
+    @ResponseStatus(value= HttpStatus.OK)
+    public List<CharacterDTO> getAll(){
+
+        List<Characters> charList = characterService.getAll();
+
+        return charList.stream().map(characterMapper::toCharacterDto).collect(Collectors.toList());
     }
-    @GetMapping(path = "/all")
-    public ResponseEntity<?> getAll(){
-        return ResponseEntity.ok(characterService.findAll());
-    }
 
-    //TODO: OBS!! Add method does not WORK
+    //create
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody Characters characters){
-        Characters savedCharacter = characterService.add(characters);
-        //CharacterDTO characterDTO = characterMapper.characterToCharacterDTO(savedCharacter);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
+    @ResponseStatus(value= HttpStatus.CREATED)
+    public CharacterDTO createCharacter(@RequestBody Characters character){
 
-    //update
-    //read
-    //delete
+
+
+        return characterMapper.toCharacterDto(characterService.create(character));
+    }
 
 }
