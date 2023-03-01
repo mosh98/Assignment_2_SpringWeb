@@ -1,5 +1,6 @@
 package com.example.assignment_2_springweb.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,12 +32,12 @@ public class Movie {
     private String trailer;
 
     @ManyToMany
-    @JsonManagedReference
+    @JsonIgnore
     @JoinTable(name = "movie_characters", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "character_id"))
     private Set<Characters> characters;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonIgnore
     @JoinColumn(name = "franchise_id")
     private Franchise franchise;
 
