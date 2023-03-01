@@ -19,19 +19,19 @@ public class MovieController {
         this.movieService = movieService;
     }
 
-    @GetMapping("{id}") // GET: localhost:8080/api/v1/students/1
-    public ResponseEntity<Movie> getById(@PathVariable Integer id) {
-        return ResponseEntity.ok(movieService.findById(id));
-    }
-
     @GetMapping
     public ResponseEntity<Collection<Movie>> getAll() {
         Collection<Movie> movies = movieService.findAll();
         return new ResponseEntity<>(movies, HttpStatus.OK);
     }
 
+    @GetMapping("{id}") // GET:
+    public ResponseEntity<Movie> getById(@PathVariable Integer id) {
+        return ResponseEntity.ok(movieService.findById(id));
+    }
+
     // TODO look up raw use of ResponseEntity
-    @PostMapping
+    @PostMapping // POST
     public ResponseEntity add(@RequestBody Movie movie) {
         Movie mov = movieService.add(movie);
         URI location = URI.create("movies/" + mov.getId());
@@ -39,12 +39,18 @@ public class MovieController {
         // return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("{id}") // PUT: localhost:8080/api/v1/students/1
+    @PutMapping("{id}") // PUT
     public ResponseEntity<Movie> update(@RequestBody Movie movie, @PathVariable int id) {
         // Validates if body is correct
         if(id != movie.getId())
             return ResponseEntity.badRequest().build();
         movieService.update(movie);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("{id}") // DELETE
+    public ResponseEntity<Movie> delete(@PathVariable int id) {
+        movieService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 

@@ -1,11 +1,13 @@
 package com.example.assignment_2_springweb.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -40,6 +42,21 @@ public class Movie {
     @JsonIgnore
     @JoinColumn(name = "franchise_id")
     private Franchise franchise;
+
+    @JsonGetter("franchise")
+    public Integer jsonGetProfessor() {
+        if(franchise != null)
+            return franchise.getId();
+        return null;
+    }
+
+    @JsonGetter("characters")
+    public List<Integer> jsonGetSubjects() {
+        if(characters != null)
+            return characters.stream().map(s -> s.getId())
+                    .collect(Collectors.toList());
+        return null;
+    }
 
     @Override
     public String toString() {
