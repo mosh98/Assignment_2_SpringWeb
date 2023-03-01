@@ -2,10 +2,14 @@ package com.example.assignment_2_springweb.model;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -34,10 +38,16 @@ public class Franchise {
     private String description;
 
     @OneToMany(mappedBy = "franchise")
-    @JsonBackReference
+    @JsonIgnore
     private Set<Movie> movies;
 
-
+    @JsonGetter("movies")
+    public List<Integer> jsonGetSubjects() {
+        if(movies != null)
+            return movies.stream().map(s -> s.getId())
+                    .collect(Collectors.toList());
+        return null;
+    }
 
 
 }
