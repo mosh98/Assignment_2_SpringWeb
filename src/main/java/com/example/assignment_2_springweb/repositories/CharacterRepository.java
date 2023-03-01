@@ -18,11 +18,6 @@ public interface CharacterRepository extends JpaRepository<Characters, Integer> 
     Optional<Characters> getCharactersByFullName(String name);
 
 
-
-
-
-
-
 }
 
 

@@ -1,5 +1,6 @@
 package com.example.assignment_2_springweb.controllers;
 import com.example.assignment_2_springweb.model.Characters;
+import com.example.assignment_2_springweb.model.Movie;
 import com.example.assignment_2_springweb.model.dtos.CharacterDTO;
 import com.example.assignment_2_springweb.mappers.CharacterMapper;
 import com.example.assignment_2_springweb.services.character.CharacterService;
@@ -7,9 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -52,12 +53,26 @@ public class CharacterController {
         Optional<Characters> optionalCharacter = Optional.ofNullable(characterService.getById(id));
 
         if (optionalCharacter.isPresent()) {
+
+            //old movie ids
+            Set<Integer> movieIds = optionalCharacter.get().getMovie().stream()
+                    .map(Movie::getId)
+                    .collect(Collectors.toSet());
+
+
             Characters character = optionalCharacter.get();
             character.setFullName(characterDTO.getFullName());
             character.setAlias(characterDTO.getAlias());
             character.setGender(characterDTO.getGender());
             character.setPicture(characterDTO.getPicture());
-            character.setMovie(null);
+
+            //merge between dto and old character ids
+            movieIds.addAll(characterDTO.getMovie());
+
+            //get all the movie object from the database
+
+
+            character.setMovie( null); //update existing character obj with new movie object
 
 
             //character.setMovies();
@@ -74,6 +89,7 @@ public class CharacterController {
     //delete
     @DeleteMapping("{id}")
     public String delete(@PathVariable int id){
+        //set
         return characterService.deleteById(id);
     }
 
