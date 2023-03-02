@@ -5,6 +5,7 @@ import com.example.assignment_2_springweb.model.dtos.CharacterDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -22,8 +23,8 @@ public class CharacterMapperImpl implements CharacterMapper{
         dto.setPicture(character.getPicture());
 
         if (character.getMovie() != null) {
-            List<Integer> moviesId = character.getMovie().stream()
-                    .map(Movie::getId).collect(Collectors.toList());
+            Set<Integer> moviesId = character.getMovie().stream()
+                    .map(Movie::getId).collect(Collectors.toSet());
             dto.setMovie(moviesId);
         }
         return dto;

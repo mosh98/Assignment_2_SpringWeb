@@ -5,7 +5,6 @@ import com.example.assignment_2_springweb.model.Movie;
 import com.example.assignment_2_springweb.model.dtos.CharacterDTO;
 import com.example.assignment_2_springweb.repositories.CharacterRepository;
 import com.example.assignment_2_springweb.repositories.MovieRepository;
-import com.example.assignment_2_springweb.services.movie.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -46,19 +45,8 @@ public class CharacterService {
             character.setGender(characterDTO.getGender());
             character.setPicture(characterDTO.getPicture());
 
-            System.out.print("Old movies: ");
-            //print movie ids side by side
-            for (Integer movieId : movieIds) {
-                System.out.print(movieId + " ");
-            }
             //merge between dto and old character ids
             movieIds.addAll(characterDTO.getMovie());
-
-            System.out.print("new movies: ");
-            //print movie ids side by side
-            for (Integer movieId : movieIds) {
-                System.out.print(movieId + " ");
-            }
 
 
             //get all the movie object from the database
