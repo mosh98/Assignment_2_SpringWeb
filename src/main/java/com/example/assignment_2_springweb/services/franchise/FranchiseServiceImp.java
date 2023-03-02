@@ -1,10 +1,12 @@
 package com.example.assignment_2_springweb.services.franchise;
 
+import com.example.assignment_2_springweb.mappers.mapstrukt.CharacterMapper;
 import com.example.assignment_2_springweb.mappers.mapstrukt.FranchiseMapper;
 import com.example.assignment_2_springweb.mappers.mapstrukt.MovieMapper;
+import com.example.assignment_2_springweb.model.Characters;
 import com.example.assignment_2_springweb.model.Franchise;
 import com.example.assignment_2_springweb.model.Movie;
-import com.example.assignment_2_springweb.model.dtos.FranchiseDTO;
+import com.example.assignment_2_springweb.model.dtos.CharacterDTO;
 import com.example.assignment_2_springweb.model.dtos.MovieDTO;
 import com.example.assignment_2_springweb.repositories.FranchiseRepository;
 import com.example.assignment_2_springweb.repositories.MovieRepository;
@@ -27,6 +29,8 @@ public class FranchiseServiceImp implements FranchiseService{
     private final MovieMapper movieMapper;
 
     private final FranchiseMapper franchiseMapper;
+
+    private CharacterMapper characterMapper;
 
 
     @Override
@@ -88,5 +92,30 @@ public class FranchiseServiceImp implements FranchiseService{
         // convert to movieDTO
         return franchiseSet.stream().map(movie -> movieMapper.movieToDto(movie)).collect(Collectors.toSet());
 
+    }
+
+    @Override
+    public Set<CharacterDTO> getAllCharactersFromFranchise(Integer id) {
+        //Get all characters from a franchise
+        //first get all movies from a franchise
+        //for each movie get all characters
+        //return all characters
+        Set<Movie> movies = franchiseRepository.findById(id).get().getMovies();
+        Set<CharacterDTO> characters = null;
+
+        for (Movie movie : movies) {
+            Set<Characters> charactersInCurrentMovie = movie.getCharacters();
+            for (Characters character : charactersInCurrentMovie) {
+
+                characters.add(characterMapper.toCharacterDto(character));
+                //For each character in charactersInCurrMovie add to characters
+
+
+//                characters.add(characterMapper.toCharacterDto(character));
+            }
+            //characters.addAll();
+        }
+
+        return characters;
     }
 }
