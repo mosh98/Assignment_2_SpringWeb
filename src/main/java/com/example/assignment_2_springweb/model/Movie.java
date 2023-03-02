@@ -55,7 +55,7 @@ public class Movie {
     @JsonGetter("characters")
     public List<Integer> jsonGetSubjects() {
         if(characters != null)
-            return characters.stream().map(s -> s.getId())
+            return characters.stream().map(Characters::getId)
                     .collect(Collectors.toList());
         return null;
     }

@@ -1,7 +1,5 @@
 package com.example.assignment_2_springweb.model;
 
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -44,10 +42,9 @@ public class Franchise {
     @JsonGetter("movies")
     public List<Integer> jsonGetSubjects() {
         if(movies != null)
-            return movies.stream().map(s -> s.getId())
+            return movies.stream().map(Movie::getId)
                     .collect(Collectors.toList());
         return null;
     }
-
 
 }
