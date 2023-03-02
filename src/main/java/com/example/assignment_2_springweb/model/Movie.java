@@ -1,12 +1,13 @@
 package com.example.assignment_2_springweb.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -32,17 +33,44 @@ public class Movie {
     @Column(name = "trailer_link", length = 100)
     private String trailer;
 
-    //@ManyToMany(mappedBy="characters")
-    //@JoinColumn(name="movie_characters", joinColumns = { @JoinColumns( name = "movie_id")}, inverseJoinColumns  = {@JoinColumn(name = "character_id") })
     @ManyToMany
-    @JoinTable(name = "movie_characters", joinColumns = @JoinColumn(name = "movie_id"),inverseJoinColumns = @JoinColumn(name = "character_id") )
+    @JsonIgnore
+    @JoinTable(name = "movie_characters", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "character_id"))
     private Set<Characters> characters;
 
-
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "franchise_id")
     private Franchise franchise;
 
+    // TODO change method name
+    @JsonGetter("franchise")
+    public Integer jsonGetProfessor() {
+        if(franchise != null)
+            return franchise.getId();
+        return null;
+    }
 
+    // TODO change method name
+    @JsonGetter("characters")
+    public List<Integer> jsonGetSubjects() {
+        if(characters != null)
+            return characters.stream().map(Characters::getId)
+                    .collect(Collectors.toList());
+        return null;
+    }
 
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", genre='" + genre + '\'' +
+                ", release=" + release +
+                ", director='" + director + '\'' +
+                ", poster='" + poster + '\'' +
+                ", trailer='" + trailer + '\'' +
+                ", franchise=" + franchise +
+                '}';
+    }
 }

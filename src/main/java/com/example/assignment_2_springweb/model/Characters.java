@@ -7,8 +7,10 @@ import lombok.*;
 import java.util.Set;
 
 @Getter // Lombok
+@Setter // Lombok
 @ToString // Lombok
 @NoArgsConstructor // Lombok
+@AllArgsConstructor
 @Entity
 public class Characters {
     //TODO: Check if the movie_charatcer table only contains unique rows.
