@@ -27,12 +27,12 @@ public class CharacterController {
     private final CharacterMapper characterMapper;
 
     //get
-    @Operation(summary = "Get all characters",
-            description = "Get all characters, return a list with Character DTO objects",
-            tags = {"character"})
-    @ApiResponse(responseCode = "200", description = "Characters found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CharacterDTO.class)))
+
+    /*@ApiResponse(responseCode = "200", description = "Characters found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CharacterDTO.class)))
     @ApiResponse(responseCode = "404", description = "Characters not found", content = @Content)
-    @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
+    @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)*/
+    @Operation(summary = "Get all characters",
+            description = "Get all characters, return a list with Character DTO objects")
     @GetMapping
     @ResponseStatus(value= HttpStatus.OK)
     public List<CharacterDTO> getAll(){
@@ -42,13 +42,12 @@ public class CharacterController {
 
     //
     @Operation(summary = "Get character by id",
-            description = "Get character by id, return a Character DTO object",
-            tags = {"character"})
+            description = "Get character by id, return a Character DTO object")
     @ApiResponse(responseCode = "200", description = "Character found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CharacterDTO.class)))
     @ApiResponse(responseCode = "404", description = "Character not found", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @GetMapping
-    @RequestMapping("{id}")
+    @RequestMapping(path = "{id}", method = RequestMethod.GET)
     @ResponseStatus(value= HttpStatus.OK)
     public CharacterDTO getById(@PathVariable int id){
         return characterMapper.toCharacterDto(characterService.getById(id));
@@ -57,8 +56,7 @@ public class CharacterController {
 
     //create
     @Operation(summary = "Create character",
-            description = "Create character, return a Character DTO object",
-            tags = {"character"})
+            description = "Create character, return a Character DTO object")
     @ApiResponse(responseCode = "201", description = "Character created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CharacterDTO.class)))
     @ApiResponse(responseCode = "400", description = "Bad request", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
@@ -70,8 +68,7 @@ public class CharacterController {
 
     //update
     @Operation(summary = "Update character",
-            description = "Update character, return a Character DTO object",
-            tags = {"character"})
+            description = "Update character, return a Character DTO object")
     @ApiResponse(responseCode = "200", description = "Character updated", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CharacterDTO.class)))
     @ApiResponse(responseCode = "400", description = "Bad request", content = @Content)
     @ApiResponse(responseCode = "404", description = "Character not found", content = @Content)
@@ -88,8 +85,7 @@ public class CharacterController {
 
     //delete
     @Operation(summary = "Delete character",
-            description = "Delete character, return a String",
-            tags = {"character"})
+            description = "Delete character, return a String")
     @ApiResponse(responseCode = "200", description = "Character deleted", content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class)))
     @ApiResponse(responseCode = "404", description = "Character not found", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
