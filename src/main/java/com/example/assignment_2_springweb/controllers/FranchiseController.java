@@ -6,6 +6,7 @@ import com.example.assignment_2_springweb.model.Movie;
 import com.example.assignment_2_springweb.model.dtos.FranchiseDTO;
 import com.example.assignment_2_springweb.model.dtos.MovieDTO;
 import com.example.assignment_2_springweb.services.franchise.FranchiseService;
+import com.example.assignment_2_springweb.services.movie.MovieService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,6 +27,7 @@ import java.util.Set;
 public class FranchiseController {
 
   private final FranchiseService franchiseService;
+  private final MovieService movieService;
   private final FranchiseMapper franchiseMapper;
 
 
@@ -64,26 +66,23 @@ public class FranchiseController {
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @PostMapping
     @ResponseStatus(value= HttpStatus.CREATED)
-    public FranchiseDTO add(@RequestBody Franchise franchise) {
-        Franchise franc = franchiseService.add(franchise);
-        FranchiseDTO franchiseDTO = franchiseMapper.franchiseToDto(franc);
+    public FranchiseDTO add(@RequestBody FranchiseDTO franchiseDTO) {
+        Franchise franc = franchiseService.add( franchiseMapper.dtoToFranchise(franchiseDTO,movieService));
+        FranchiseDTO returnDto = franchiseMapper.franchiseToDto(franc);
 
-        //URI location = URI.create("franchises/" + franc.getId());
-
-
-        return franchiseDTO;
+        return returnDto;
     }
 
     // TODO: Movies not updating
     @Operation(summary="Update a franchise")
     @PutMapping("{id}") // PUT
     @ResponseStatus(HttpStatus.OK)
-    public FranchiseDTO update(@RequestBody Franchise franchise, @PathVariable int id) {
+    public FranchiseDTO update(@RequestBody FranchiseDTO franchise, @PathVariable int id) {
         // Validates if body is correct
         if(id != franchise.getId())
             return null;
 
-        return franchiseMapper.franchiseToDto(franchiseService.update(franchise));
+        return franchiseMapper.franchiseToDto(franchiseService.update( franchiseMapper.dtoToFranchise(franchise,movieService) ));
     }
 
 
@@ -103,10 +102,12 @@ public class FranchiseController {
 
 
     //TODO: Get all characters from a franchise
+    //Get all characters from a franchise
+    //@Operation(summary = "Get all characters from a franchise")
+
 
     //TODO: Update movies in a franchise
 
-    //TODO: Convert to DTO's when returing from controller
 
     @Operation(summary="Delete a franchise")
     @ApiResponse(responseCode = "204", description = "Deleted a franchise",content = @Content)

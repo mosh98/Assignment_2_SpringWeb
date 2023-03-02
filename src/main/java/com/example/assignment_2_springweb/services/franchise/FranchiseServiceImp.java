@@ -1,10 +1,13 @@
 package com.example.assignment_2_springweb.services.franchise;
 
+import com.example.assignment_2_springweb.mappers.mapstrukt.FranchiseMapper;
 import com.example.assignment_2_springweb.mappers.mapstrukt.MovieMapper;
 import com.example.assignment_2_springweb.model.Franchise;
 import com.example.assignment_2_springweb.model.Movie;
+import com.example.assignment_2_springweb.model.dtos.FranchiseDTO;
 import com.example.assignment_2_springweb.model.dtos.MovieDTO;
 import com.example.assignment_2_springweb.repositories.FranchiseRepository;
+import com.example.assignment_2_springweb.repositories.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +21,13 @@ import java.util.stream.Collectors;
 public class FranchiseServiceImp implements FranchiseService{
 
     private final FranchiseRepository franchiseRepository;
+    private final MovieRepository movieRepository;
 
     //crate movie mapper
     private final MovieMapper movieMapper;
+
+    private final FranchiseMapper franchiseMapper;
+
 
     @Override
     public Franchise findById(Integer id) {
@@ -37,10 +44,16 @@ public class FranchiseServiceImp implements FranchiseService{
         return franchiseRepository.save(entity);
     }
 
+
+
+    //make an update function that will update the franchise and the movies
     @Override
     public Franchise update(Franchise entity) {
+
         return franchiseRepository.save(entity);
     }
+
+
 
     @Override
     public void deleteById(Integer id) {
@@ -74,8 +87,6 @@ public class FranchiseServiceImp implements FranchiseService{
 
         // convert to movieDTO
         return franchiseSet.stream().map(movie -> movieMapper.movieToDto(movie)).collect(Collectors.toSet());
-
-
 
     }
 }
