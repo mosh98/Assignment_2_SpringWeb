@@ -4,6 +4,7 @@ import com.example.assignment_2_springweb.mappers.mapstrukt.FranchiseMapper;
 import com.example.assignment_2_springweb.model.Franchise;
 import com.example.assignment_2_springweb.model.Movie;
 import com.example.assignment_2_springweb.model.dtos.FranchiseDTO;
+import com.example.assignment_2_springweb.model.dtos.MovieDTO;
 import com.example.assignment_2_springweb.services.franchise.FranchiseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,7 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,12 +26,7 @@ import java.util.Collection;
 public class FranchiseController {
 
   private final FranchiseService franchiseService;
-    private final FranchiseMapper franchiseMapper;
-     /*
-    public FranchiseController(FranchiseService franchiseService, FranchiseMapper franchiseMapper) {
-        this.franchiseService = franchiseService;
-        this.franchiseMapper = franchiseMapper;
-    }*/
+  private final FranchiseMapper franchiseMapper;
 
 
     @Operation(summary = "Get all franchises")
@@ -35,9 +34,17 @@ public class FranchiseController {
     @ApiResponse(responseCode = "404", description = "No franchises found", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @GetMapping
-    public ResponseEntity<Collection<Franchise>> getAll() {
+    public ResponseEntity<Collection<FranchiseDTO>> getAll() {
         Collection<Franchise> franchise = franchiseService.findAll();
-        return new ResponseEntity<>(franchise, HttpStatus.OK);
+
+        Collection<FranchiseDTO> franchiseDTOs = new ArrayList<>();
+
+        //convert each franchise to a franchiseDTO
+        for (Franchise fr : franchise) {
+            franchiseDTOs.add(franchiseMapper.franchiseToDto(fr));
+        }
+
+        return new ResponseEntity<>(franchiseDTOs, HttpStatus.OK);
     }
 
 
@@ -48,7 +55,6 @@ public class FranchiseController {
     @GetMapping("{id}") // GET:
     public ResponseEntity<FranchiseDTO> getById(@PathVariable Integer id) {
 
-
         return ResponseEntity.ok(franchiseMapper.franchiseToDto(franchiseService.findById(id)) );
     }
 
@@ -56,30 +62,49 @@ public class FranchiseController {
     @ApiResponse(responseCode = "201", description = "Created a new franchise",content = @Content)
     @ApiResponse(responseCode = "400", description = "Bad request", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
-    @PostMapping // POST
-    public ResponseEntity<Franchise> add(@RequestBody Franchise franchise) {
+    @PostMapping
+    @ResponseStatus(value= HttpStatus.CREATED)
+    public FranchiseDTO add(@RequestBody Franchise franchise) {
         Franchise franc = franchiseService.add(franchise);
-        URI location = URI.create("franchises/" + franc.getId());
-        return ResponseEntity.created(location).build();
+        FranchiseDTO franchiseDTO = franchiseMapper.franchiseToDto(franc);
+
+        //URI location = URI.create("franchises/" + franc.getId());
+
+
+        return franchiseDTO;
     }
 
     // TODO: Movies not updating
     @Operation(summary="Update a franchise")
     @PutMapping("{id}") // PUT
-    public ResponseEntity<Franchise> update(@RequestBody Franchise franchise, @PathVariable int id) {
+    @ResponseStatus(HttpStatus.OK)
+    public FranchiseDTO update(@RequestBody Franchise franchise, @PathVariable int id) {
         // Validates if body is correct
         if(id != franchise.getId())
-            return ResponseEntity.badRequest().build();
-        franchiseService.update(franchise);
-        return ResponseEntity.noContent().build();
+            return null;
+
+        return franchiseMapper.franchiseToDto(franchiseService.update(franchise));
     }
 
 
     //TODO: Get all movies from a franchise
+    //Get all movies from a franchise
+    @Operation(summary = "Get all movies from a franchise")
+    @ApiResponse(responseCode = "200", description = "Found all movies from a franchise",content = @Content)
+    @ApiResponse(responseCode = "404", description = "No movies found", content = @Content)
+    @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
+    @GetMapping("{id}/movies")
+    @ResponseStatus(HttpStatus.OK)
+    public Set<MovieDTO> getAllMovies(@PathVariable Integer id) {
+//        Set<MovieDTO> movies = franchiseService.findAllMovies(id);
+
+     return franchiseService.findAllMovies(id);
+    }
+
 
     //TODO: Get all characters from a franchise
 
-    //TODO: Update movies in a francise
+    //TODO: Update movies in a franchise
 
     //TODO: Convert to DTO's when returing from controller
 
@@ -88,7 +113,7 @@ public class FranchiseController {
     @ApiResponse(responseCode = "404", description = "No franchise found", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @DeleteMapping("{id}") // DELETE
-    public ResponseEntity<Franchise> delete(@PathVariable int id) {
+    public ResponseEntity<FranchiseDTO> delete(@PathVariable int id) {
         franchiseService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
