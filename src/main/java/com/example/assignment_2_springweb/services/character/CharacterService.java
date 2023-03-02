@@ -1,5 +1,5 @@
 package com.example.assignment_2_springweb.services.character;
-import com.example.assignment_2_springweb.mappers.CharacterMapper;
+import com.example.assignment_2_springweb.mappers.mapstrukt.CharacterMapper;
 import com.example.assignment_2_springweb.model.Characters;
 import com.example.assignment_2_springweb.model.Movie;
 import com.example.assignment_2_springweb.model.dtos.CharacterDTO;
@@ -30,6 +30,9 @@ public class CharacterService {
     public CharacterDTO updateCharacter (int id, CharacterDTO characterDTO){
 
         Optional<Characters> optionalCharacter = Optional.of(characterRepository.getById(id));
+
+
+
 
         if (optionalCharacter.isPresent()) {
 
@@ -75,5 +78,22 @@ public class CharacterService {
 
     public Characters getById(int id) {
         return characterRepository.getReferenceById(id);
+    }
+
+    public String delete(int id) {
+        //1. Get current character
+        Characters character = characterRepository.getById(id);
+
+        //2. Get all movies for this character
+        Set<Movie> movies = character.getMovie();
+
+        //from each movie if the character is in it, remove it
+        for (Movie movie : movies) {
+            movie.getCharacters().remove(character);
+        }
+
+        //3. Delete character
+        characterRepository.delete(character);
+        return "Character Deleted";
     }
 }

@@ -1,10 +1,10 @@
 package com.example.assignment_2_springweb.controllers;
+import com.example.assignment_2_springweb.mappers.mapstrukt.CharacterMapper;
 import com.example.assignment_2_springweb.model.Characters;
 import com.example.assignment_2_springweb.model.Movie;
 import com.example.assignment_2_springweb.model.dtos.CharacterDTO;
-import com.example.assignment_2_springweb.mappers.CharacterMapper;
 import com.example.assignment_2_springweb.services.character.CharacterService;
-import com.example.assignment_2_springweb.services.movie.MovieServiceImp;
+import com.example.assignment_2_springweb.services.movie.MovieService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -25,6 +25,8 @@ public class CharacterController {
 
     private final CharacterService characterService;
     private final CharacterMapper characterMapper;
+
+    private final MovieService movieService;
 
     //get
 
@@ -62,8 +64,9 @@ public class CharacterController {
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @PostMapping
     @ResponseStatus(value= HttpStatus.CREATED)
-    public CharacterDTO createCharacter(@RequestBody Characters character){
-        return characterMapper.toCharacterDto(characterService.create(character));
+    public CharacterDTO createCharacter(@RequestBody CharacterDTO character){
+
+        return characterMapper.toCharacterDto(characterService.create( characterMapper.dtoToCharacters(character,movieService) ));
     }
 
     //update
@@ -82,7 +85,6 @@ public class CharacterController {
         return characterService.updateCharacter(id,characterDTO);
     }
 
-
     //delete
     @Operation(summary = "Delete character",
             description = "Delete character, return a String")
@@ -91,32 +93,8 @@ public class CharacterController {
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @DeleteMapping("{id}")
     public String delete(@PathVariable int id){
-        Optional<Characters> optionalCharacter = Optional.ofNullable(characterService.getById(id));
 
-        if(optionalCharacter.isPresent()){
-
-            Characters characters = optionalCharacter.get();
-
-            //characters.setMovie(null);
-            Set<Movie> movieSet = characters.getMovie();
-
-            //from each movie if the character is in it, remove it
-            for (Movie movie : movieSet) {
-                Set<Characters> movieChars = movie.getCharacters();
-                for (Characters movieChar : movieChars) {
-                    if(movieChar.getId() ==characters.getId() ){
-                        //take away character from movie
-                        movieChars.remove(movieChar);
-                    }
-                }
-                movie.setCharacters(movieChars); //updating each movie
-            }
-
-
-
-        }else throw new RuntimeException("No character exist");
-        //set
-        return characterService.deleteById(id);
+        return characterService.delete(id);
     }
 
 

@@ -1,8 +1,10 @@
 package com.example.assignment_2_springweb.controllers;
 
 import com.example.assignment_2_springweb.mappers.mapstrukt.FranchiseMapper;
+import com.example.assignment_2_springweb.model.Characters;
 import com.example.assignment_2_springweb.model.Franchise;
 import com.example.assignment_2_springweb.model.Movie;
+import com.example.assignment_2_springweb.model.dtos.CharacterDTO;
 import com.example.assignment_2_springweb.model.dtos.FranchiseDTO;
 import com.example.assignment_2_springweb.model.dtos.MovieDTO;
 import com.example.assignment_2_springweb.services.franchise.FranchiseService;
@@ -102,8 +104,19 @@ public class FranchiseController {
 
 
     //TODO: Get all characters from a franchise
-    //Get all characters from a franchise
-    //@Operation(summary = "Get all characters from a franchise")
+
+    @Operation(summary = "Get all characters from a franchise")
+    @ApiResponse(responseCode = "200", description = "Found all characters from a franchise",content = @Content)
+    @ApiResponse(responseCode = "404", description = "No characters found", content = @Content)
+    @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
+    @GetMapping
+    @RequestMapping(path= "{id}/characters", method = RequestMethod.GET )
+    @ResponseStatus(value=HttpStatus.OK)
+    public Set<CharacterDTO> getAllCharacters(@PathVariable Integer id) {
+
+        return franchiseService.getAllCharactersFromFranchise(id);
+    }
+
 
 
     //TODO: Update movies in a franchise
