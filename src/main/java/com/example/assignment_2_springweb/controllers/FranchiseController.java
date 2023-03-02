@@ -1,11 +1,14 @@
 package com.example.assignment_2_springweb.controllers;
 
+import com.example.assignment_2_springweb.mappers.mapstrukt.FranchiseMapper;
 import com.example.assignment_2_springweb.model.Franchise;
 import com.example.assignment_2_springweb.model.Movie;
+import com.example.assignment_2_springweb.model.dtos.FranchiseDTO;
 import com.example.assignment_2_springweb.services.franchise.FranchiseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,14 +17,17 @@ import java.net.URI;
 import java.util.Collection;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(path = "franchises")
 public class FranchiseController {
 
-    private final FranchiseService franchiseService;
-
-    public FranchiseController(FranchiseService franchiseService) {
+  private final FranchiseService franchiseService;
+    private final FranchiseMapper franchiseMapper;
+     /*
+    public FranchiseController(FranchiseService franchiseService, FranchiseMapper franchiseMapper) {
         this.franchiseService = franchiseService;
-    }
+        this.franchiseMapper = franchiseMapper;
+    }*/
 
 
     @Operation(summary = "Get all franchises")
@@ -40,8 +46,10 @@ public class FranchiseController {
     @ApiResponse(responseCode = "404", description = "No franchise found", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @GetMapping("{id}") // GET:
-    public ResponseEntity<Franchise> getById(@PathVariable Integer id) {
-        return ResponseEntity.ok(franchiseService.findById(id));
+    public ResponseEntity<FranchiseDTO> getById(@PathVariable Integer id) {
+
+
+        return ResponseEntity.ok(franchiseMapper.franchiseToDto(franchiseService.findById(id)) );
     }
 
     @Operation(summary="Add a new franchise")

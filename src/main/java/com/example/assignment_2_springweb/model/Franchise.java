@@ -40,10 +40,10 @@ public class Franchise {
     private Set<Movie> movies;
 
     @JsonGetter("movies")
-    public List<Integer> jsonGetSubjects() {
+    public Set<Integer> jsonGetSubjects() {
         if(movies != null)
             return movies.stream().map(Movie::getId)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toSet());
         return null;
     }
 
