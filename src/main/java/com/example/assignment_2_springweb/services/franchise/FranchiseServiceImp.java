@@ -11,9 +11,11 @@ import com.example.assignment_2_springweb.model.dtos.MovieDTO;
 import com.example.assignment_2_springweb.repositories.FranchiseRepository;
 import com.example.assignment_2_springweb.repositories.MovieRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,8 +30,10 @@ public class FranchiseServiceImp implements FranchiseService{
     //crate movie mapper
     private final MovieMapper movieMapper;
 
+    @Autowired
     private final FranchiseMapper franchiseMapper;
 
+    @Autowired
     private CharacterMapper characterMapper;
 
 
@@ -86,7 +90,6 @@ public class FranchiseServiceImp implements FranchiseService{
 
         // get movie ids using franchise id
         //franchiseRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
-
         Set<Movie> franchiseSet =  franchiseRepository.findById(id).get().getMovies();
 
         // convert to movieDTO
@@ -96,24 +99,25 @@ public class FranchiseServiceImp implements FranchiseService{
 
     @Override
     public Set<CharacterDTO> getAllCharactersFromFranchise(Integer id) {
+
         //Get all characters from a franchise
         //first get all movies from a franchise
         //for each movie get all characters
         //return all characters
+
         Set<Movie> movies = franchiseRepository.findById(id).get().getMovies();
-        Set<CharacterDTO> characters = null;
+        Set<CharacterDTO> characters = new HashSet<>();
 
         for (Movie movie : movies) {
+
             Set<Characters> charactersInCurrentMovie = movie.getCharacters();
+
             for (Characters character : charactersInCurrentMovie) {
-
-                characters.add(characterMapper.toCharacterDto(character));
-                //For each character in charactersInCurrMovie add to characters
-
-
-//                characters.add(characterMapper.toCharacterDto(character));
+                //System.out.println(character.getFullName());
+                CharacterDTO xx =  characterMapper.toCharacterDto(character);
+                System.out.println(xx.getFullName());
+                characters.add(xx);
             }
-            //characters.addAll();
         }
 
         return characters;

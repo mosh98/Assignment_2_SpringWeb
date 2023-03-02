@@ -30,11 +30,11 @@ public class CharacterController {
 
     //get
 
-    /*@ApiResponse(responseCode = "200", description = "Characters found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CharacterDTO.class)))
-    @ApiResponse(responseCode = "404", description = "Characters not found", content = @Content)
-    @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)*/
     @Operation(summary = "Get all characters",
             description = "Get all characters, return a list with Character DTO objects")
+    @ApiResponse(responseCode = "200", description = "Characters found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CharacterDTO.class)))
+    @ApiResponse(responseCode = "404", description = "Characters not found", content = @Content)
+    @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @GetMapping
     @ResponseStatus(value= HttpStatus.OK)
     public List<CharacterDTO> getAll(){
