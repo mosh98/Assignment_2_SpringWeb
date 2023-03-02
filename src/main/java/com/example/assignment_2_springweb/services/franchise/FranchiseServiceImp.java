@@ -49,7 +49,7 @@ public class FranchiseServiceImp implements FranchiseService{
 
     @Override
     public Franchise add(Franchise entity) {
-        return franchiseRepository.save(entity);
+        return franchiseRepository.saveAndFlush(entity);
     }
 
 
@@ -57,6 +57,11 @@ public class FranchiseServiceImp implements FranchiseService{
     //make an update function that will update the franchise and the movies
     @Override
     public Franchise update(Franchise entity) {
+        //get the movie ids from the entity
+        Set<Movie> movies = entity.getMovies();
+        movies.forEach(movie -> {
+            movie.setFranchise(entity);
+        });
 
         return franchiseRepository.save(entity);
     }
