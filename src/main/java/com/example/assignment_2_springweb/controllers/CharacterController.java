@@ -97,6 +97,7 @@ public class CharacterController {
             //characters.getMovie().forEach(s->s.setCharacters(null));
 
 
+
             //Set<Movie> movieSet =  characters.getMovie(); //get movies this character
 
             characters.setMovie(null);
