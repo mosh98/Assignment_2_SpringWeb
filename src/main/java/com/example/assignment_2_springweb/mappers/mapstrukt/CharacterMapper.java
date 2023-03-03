@@ -19,8 +19,6 @@ public interface CharacterMapper {
 
 
 
-
-
     @Mapping(source = "movie", target = "movie", qualifiedByName = "moviesConverter")
     CharacterDTO toCharacterDto(Characters characters);
 

@@ -2,7 +2,6 @@ package com.example.assignment_2_springweb.model.dtos;
 
 import lombok.Data;
 
-import java.util.List;
 import java.util.Set;
 
 @Data

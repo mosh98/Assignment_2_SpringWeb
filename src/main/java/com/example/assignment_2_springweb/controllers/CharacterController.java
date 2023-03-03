@@ -1,9 +1,8 @@
 package com.example.assignment_2_springweb.controllers;
 import com.example.assignment_2_springweb.mappers.mapstrukt.CharacterMapper;
 import com.example.assignment_2_springweb.model.Characters;
-import com.example.assignment_2_springweb.model.Movie;
 import com.example.assignment_2_springweb.model.dtos.CharacterDTO;
-import com.example.assignment_2_springweb.services.character.CharacterService;
+import com.example.assignment_2_springweb.services.character.CharacterServiceImpl;
 import com.example.assignment_2_springweb.services.movie.MovieService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,22 +20,22 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CharacterController {
 
-    private final CharacterService characterService;
+    private final CharacterServiceImpl characterServiceImpl;
     private final CharacterMapper characterMapper;
 
     private final MovieService movieService;
 
     //get
 
-    /*@ApiResponse(responseCode = "200", description = "Characters found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CharacterDTO.class)))
-    @ApiResponse(responseCode = "404", description = "Characters not found", content = @Content)
-    @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)*/
     @Operation(summary = "Get all characters",
             description = "Get all characters, return a list with Character DTO objects")
+    @ApiResponse(responseCode = "200", description = "Characters found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CharacterDTO.class)))
+    @ApiResponse(responseCode = "404", description = "Characters not found", content = @Content)
+    @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @GetMapping
     @ResponseStatus(value= HttpStatus.OK)
     public List<CharacterDTO> getAll(){
-        List<Characters> charList = characterService.getAll();
+        List<Characters> charList = characterServiceImpl.getAll();
         return charList.stream().map(characterMapper::toCharacterDto).collect(Collectors.toList());
     }
 
@@ -52,7 +49,7 @@ public class CharacterController {
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
     @ResponseStatus(value= HttpStatus.OK)
     public CharacterDTO getById(@PathVariable int id){
-        return characterMapper.toCharacterDto(characterService.getById(id));
+        return characterMapper.toCharacterDto(characterServiceImpl.getById(id));
     }
 
 
@@ -66,7 +63,7 @@ public class CharacterController {
     @ResponseStatus(value= HttpStatus.CREATED)
     public CharacterDTO createCharacter(@RequestBody CharacterDTO character){
 
-        return characterMapper.toCharacterDto(characterService.create( characterMapper.dtoToCharacters(character,movieService) ));
+        return characterMapper.toCharacterDto(characterServiceImpl.create( characterMapper.dtoToCharacters(character,movieService) ));
     }
 
     //update
@@ -82,7 +79,7 @@ public class CharacterController {
         //TODO: update movie? think it through......
 
 
-        return characterService.updateCharacter(id,characterDTO);
+        return characterServiceImpl.updateCharacter(id,characterDTO);
     }
 
     //delete
@@ -94,7 +91,7 @@ public class CharacterController {
     @DeleteMapping("{id}")
     public String delete(@PathVariable int id){
 
-        return characterService.delete(id);
+        return characterServiceImpl.delete(id);
     }
 
 

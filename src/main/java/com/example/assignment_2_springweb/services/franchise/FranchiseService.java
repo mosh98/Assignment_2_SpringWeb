@@ -8,10 +8,17 @@ import com.example.assignment_2_springweb.services.CrudService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 public interface FranchiseService extends CrudService<Franchise, Integer> {
     Set<MovieDTO> findAllMovies(Integer id);
 
     Set<CharacterDTO> getAllCharactersFromFranchise(Integer id);
+
+    Franchise updateMovies(int franchiseId, List<Integer> movieIds);
+
+
+
+
 }

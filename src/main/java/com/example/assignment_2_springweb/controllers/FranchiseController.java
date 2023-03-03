@@ -1,9 +1,7 @@
 package com.example.assignment_2_springweb.controllers;
 
 import com.example.assignment_2_springweb.mappers.mapstrukt.FranchiseMapper;
-import com.example.assignment_2_springweb.model.Characters;
 import com.example.assignment_2_springweb.model.Franchise;
-import com.example.assignment_2_springweb.model.Movie;
 import com.example.assignment_2_springweb.model.dtos.CharacterDTO;
 import com.example.assignment_2_springweb.model.dtos.FranchiseDTO;
 import com.example.assignment_2_springweb.model.dtos.MovieDTO;
@@ -11,13 +9,14 @@ import com.example.assignment_2_springweb.services.franchise.FranchiseService;
 import com.example.assignment_2_springweb.services.movie.MovieService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.exception.DataException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -53,13 +52,16 @@ public class FranchiseController {
 
 
     @Operation(summary = "Get a franchise by id")
-    @ApiResponse(responseCode = "200", description = "Found the franchise",content = @Content)
+    @ApiResponse(responseCode = "200", description = "Found the franchise",content = @Content(mediaType = "application/json", schema = @Schema(implementation = FranchiseDTO.class)))
     @ApiResponse(responseCode = "404", description = "No franchise found", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @GetMapping("{id}") // GET:
-    public ResponseEntity<FranchiseDTO> getById(@PathVariable Integer id) {
+    @ResponseStatus(value= HttpStatus.OK)
+    public FranchiseDTO getById(@PathVariable int id) {
+        Franchise franchise = franchiseService.findById(id);
+        FranchiseDTO franchiseDTO = franchiseMapper.franchiseToDto(franchise);
 
-        return ResponseEntity.ok(franchiseMapper.franchiseToDto(franchiseService.findById(id)) );
+        return franchiseDTO;
     }
 
     @Operation(summary="Add a new franchise")
@@ -97,14 +99,12 @@ public class FranchiseController {
     @GetMapping("{id}/movies")
     @ResponseStatus(HttpStatus.OK)
     public Set<MovieDTO> getAllMovies(@PathVariable Integer id) {
-//        Set<MovieDTO> movies = franchiseService.findAllMovies(id);
 
      return franchiseService.findAllMovies(id);
     }
 
 
-    //TODO: Get all characters from a franchise
-
+    //Get all characters from a franchise
     @Operation(summary = "Get all characters from a franchise")
     @ApiResponse(responseCode = "200", description = "Found all characters from a franchise",content = @Content)
     @ApiResponse(responseCode = "404", description = "No characters found", content = @Content)
@@ -119,16 +119,33 @@ public class FranchiseController {
 
 
 
-    //TODO: Update movies in a franchise
+    // Update movies in a franchise, where we take list of movies and add them to the franchise
+    //Update movies in a franchise
+    @Operation(summary="Update movies in a franchise")
+    @PutMapping("{id}/movies") // PUT
+    @ResponseStatus(HttpStatus.OK)
+    public FranchiseDTO updateMoviesForFranchise(@PathVariable int id, @RequestBody List<Integer> movieIds) {
+
+        Franchise franchise = franchiseService.updateMovies(id, movieIds);
+
+        return franchiseMapper.franchiseToDto(franchise);
+    }
+
 
 
     @Operation(summary="Delete a franchise")
-    @ApiResponse(responseCode = "204", description = "Deleted a franchise",content = @Content)
+    @ApiResponse(responseCode = "200", description = "Deleted a franchise",content = @Content)
     @ApiResponse(responseCode = "404", description = "No franchise found", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @DeleteMapping("{id}") // DELETE
-    public ResponseEntity<FranchiseDTO> delete(@PathVariable int id) {
-        franchiseService.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> delete(@PathVariable int id) {
+        try{
+            franchiseService.deleteById(id);
+            return ResponseEntity.ok().build();
+        }catch (DataException e){
+            return ResponseEntity.notFound().build();
+        }
+
+
     }
 }

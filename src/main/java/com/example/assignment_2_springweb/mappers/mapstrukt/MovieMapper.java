@@ -7,7 +7,6 @@ import com.example.assignment_2_springweb.model.dtos.MovieDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -18,7 +17,6 @@ public interface MovieMapper {
     @Mapping(source = "characters", target = "characters", qualifiedByName = "charactersConverter")
     @Mapping(source = "franchise", target = "franchise",qualifiedByName = "franchiseConverter")
     MovieDTO  movieToDto(Movie movie);
-
 
     @Named("charactersConverter")
     default Set<Integer> charactersConverter(Set<Characters> characters) {
@@ -32,10 +30,10 @@ public interface MovieMapper {
 
     @Named("franchiseConverter")
     default Integer franchiseConverter(Franchise franchise) {
-        return franchise.getId();
+        return (franchise != null) ? franchise.getId() : -1;
     }
 
-    default int map(Franchise value) {
+   default int map(Franchise value) {
         return value.getId();
     }
 

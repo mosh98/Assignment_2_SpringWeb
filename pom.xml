@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>Assignment_2_SpringWeb</artifactId>
+    <artifactId>springweb</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Assignment_2_SpringWeb</name>
     <description>Assignment_2_SpringWeb</description>
@@ -69,14 +69,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
+
+
+
             </plugin>
 
             <plugin>

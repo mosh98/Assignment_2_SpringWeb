@@ -25,8 +25,9 @@ public class Franchise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "franchise_id")
-    private int id;
 
+    private int id;
+    //@Getter(AccessLevel.NONE)
     @NonNull
     @Column(name = "name", length = 200, nullable = false)
     private String name;
@@ -46,5 +47,6 @@ public class Franchise {
                     .collect(Collectors.toSet());
         return null;
     }
+
 
 }

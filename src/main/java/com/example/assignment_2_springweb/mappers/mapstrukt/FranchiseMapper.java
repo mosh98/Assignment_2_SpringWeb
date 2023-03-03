@@ -3,18 +3,13 @@ package com.example.assignment_2_springweb.mappers.mapstrukt;
 import com.example.assignment_2_springweb.model.Franchise;
 import com.example.assignment_2_springweb.model.Movie;
 import com.example.assignment_2_springweb.model.dtos.FranchiseDTO;
-import com.example.assignment_2_springweb.repositories.CharacterRepository;
-import com.example.assignment_2_springweb.services.character.CharacterService;
 import com.example.assignment_2_springweb.services.movie.MovieService;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 

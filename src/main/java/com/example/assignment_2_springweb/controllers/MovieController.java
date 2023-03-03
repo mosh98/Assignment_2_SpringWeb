@@ -1,25 +1,34 @@
 package com.example.assignment_2_springweb.controllers;
 
+import com.example.assignment_2_springweb.mappers.mapstrukt.MovieMapper;
 import com.example.assignment_2_springweb.model.Movie;
+import com.example.assignment_2_springweb.model.dtos.MovieDTO;
 import com.example.assignment_2_springweb.services.movie.MovieService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @RestController
+
 @RequestMapping(path = "movies")
 public class MovieController {
 
     private final MovieService movieService;
 
-    public MovieController(MovieService movieService) {
+/*    @Autowired*/
+    private final MovieMapper movieMapper;
+
+    public MovieController(MovieService movieService, MovieMapper movieMapper) {
         this.movieService = movieService;
+        this.movieMapper= movieMapper;
     }
 
     @Operation(summary = "Get all movies")
@@ -29,6 +38,16 @@ public class MovieController {
     @GetMapping // GET
     public ResponseEntity<Collection<Movie>> getAll() {
         Collection<Movie> movies = movieService.findAll();
+        Collection<MovieDTO> moviesDTOS = new  ArrayList<>();
+
+        for (Movie movie : movies) {
+            moviesDTOS.add(movieMapper.movieToDto(movie));
+        }
+
+
+
+
+
         return new ResponseEntity<>(movies, HttpStatus.OK);
     }
 

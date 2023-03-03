@@ -38,6 +38,7 @@ public class Movie {
     @JoinTable(name = "movie_characters", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "character_id"))
     private Set<Characters> characters;
 
+
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "franchise_id")
@@ -73,4 +74,6 @@ public class Movie {
                 ", franchise=" + franchise +
                 '}';
     }
+
+
 }
