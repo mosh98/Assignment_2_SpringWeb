@@ -1,25 +1,35 @@
 package com.example.assignment_2_springweb.controllers;
 
+import com.example.assignment_2_springweb.mappers.mapstrukt.MovieMapper;
 import com.example.assignment_2_springweb.model.Movie;
+import com.example.assignment_2_springweb.model.dtos.MovieDTO;
+import com.example.assignment_2_springweb.services.character.CharacterService;
+import com.example.assignment_2_springweb.services.franchise.FranchiseService;
 import com.example.assignment_2_springweb.services.movie.MovieService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "movies")
 public class MovieController {
 
     private final MovieService movieService;
+    private final MovieMapper movieMapper;
+    private final CharacterService characterService;
+    private final FranchiseService franchiseService;
 
-    public MovieController(MovieService movieService) {
+    public MovieController(MovieService movieService, MovieMapper movieMapper, CharacterService characterService, FranchiseService franchiseService) {
         this.movieService = movieService;
+        this.movieMapper = movieMapper;
+        this.characterService = characterService;
+        this.franchiseService = franchiseService;
     }
 
     @Operation(summary = "Get all movies")
@@ -27,9 +37,12 @@ public class MovieController {
     @ApiResponse(responseCode = "404", description = "No movies found", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @GetMapping // GET
-    public ResponseEntity<Collection<Movie>> getAll() {
+    public ResponseEntity<Collection<MovieDTO>> getAll() {
         Collection<Movie> movies = movieService.findAll();
-        return new ResponseEntity<>(movies, HttpStatus.OK);
+        Collection<MovieDTO> movieDTOs = movies.stream()
+                .map(movieMapper::movieToDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(movieDTOs);
     }
 
     @Operation(summary = "Get a movie by id")
@@ -37,17 +50,17 @@ public class MovieController {
     @ApiResponse(responseCode = "404", description = "No movie found", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @GetMapping("{id}") // GET:
-    public ResponseEntity<Movie> getById(@PathVariable Integer id) {
-        return ResponseEntity.ok(movieService.findById(id));
+    public ResponseEntity<MovieDTO> getById(@PathVariable Integer id) {
+        return ResponseEntity.ok(movieMapper.movieToDto(movieService.findById(id)));
     }
 
-    // TODO look up raw use of ResponseEntity
     @Operation(summary = "Add a new movie")
     @ApiResponse(responseCode = "201", description = "Created a new movie", content = @Content)
     @ApiResponse(responseCode = "400", description = "Bad request", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @PostMapping // POST
-    public ResponseEntity add(@RequestBody Movie movie) {
+    public ResponseEntity add(@RequestBody MovieDTO movieDTO) {
+        Movie movie = movieMapper.dtoTOMovie(movieDTO, characterService, franchiseService);
         Movie mov = movieService.add(movie);
         URI location = URI.create("movies/" + mov.getId());
         return ResponseEntity.created(location).build();
