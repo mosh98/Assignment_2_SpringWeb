@@ -44,6 +44,9 @@ public interface FranchiseMapper {
 
     @Named("moviesConverterIntToMovies")
     default Set<Movie> moviesConverterIntToMovies(Set<Integer> movies, @Context MovieService movieService) {
+
+        if(movies == null) return new HashSet<>();
+
         Set<Movie> moviesz = new HashSet<>();
 
         for (Integer movieId : movies) {

@@ -17,10 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -71,6 +68,8 @@ public class FranchiseController {
     @PostMapping
     @ResponseStatus(value= HttpStatus.CREATED)
     public FranchiseDTO add(@RequestBody FranchiseDTO franchiseDTO) {
+        franchiseDTO.setMovies(null);
+
         Franchise franc = franchiseService.add( franchiseMapper.dtoToFranchise(franchiseDTO,movieService));
         FranchiseDTO returnDto = franchiseMapper.franchiseToDto(franc);
 
