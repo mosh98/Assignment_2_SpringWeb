@@ -11,7 +11,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,6 +22,7 @@ public interface MovieMapper {
     @Mapping(source = "characters", target = "characters", qualifiedByName = "charactersConverter")
     @Mapping(source = "franchise", target = "franchise", qualifiedByName = "franchiseConverter")
     MovieDTO movieToDto(Movie movie);
+
 
     @Named("charactersConverter")
     default Set<Integer> charactersConverter(Set<Characters> characters) {
@@ -36,7 +36,7 @@ public interface MovieMapper {
 
     @Named("franchiseConverter")
     default Integer franchiseConverter(Franchise franchise) {
-        return franchise.getId();
+        return (franchise != null) ? franchise.getId() : null;
     }
 
     default int map(Franchise value) {
@@ -60,9 +60,8 @@ public interface MovieMapper {
     }
 
     @Named("mapIntToFranchise")
-    default Franchise mapFranchise(int franchiseId, @Context FranchiseService franchiseServiceImp) {
-        Franchise franchise = franchiseServiceImp.findById(franchiseId);
-        return franchise;
+    default Franchise mapFranchise(Integer id, @Context FranchiseService franchiseServiceImp) {
+        return franchiseServiceImp.findById(id);
     }
 
 }

@@ -14,6 +14,6 @@ public class MovieDTO {
     private String poster;
     private String trailer;
     private Set<Integer> characters;
-    private int franchise;
+    private Integer franchise;
 
 }

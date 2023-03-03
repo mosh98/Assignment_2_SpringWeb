@@ -9,6 +9,7 @@ import com.example.assignment_2_springweb.services.movie.MovieService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(path = "movies")
 public class MovieController {
 
@@ -25,13 +27,13 @@ public class MovieController {
     private final CharacterService characterService;
     private final FranchiseService franchiseService;
 
-    public MovieController(MovieService movieService, MovieMapper movieMapper, CharacterService characterService, FranchiseService franchiseService) {
+   /* public MovieController(MovieService movieService, MovieMapper movieMapper, CharacterService characterService, FranchiseService franchiseService) {
         this.movieService = movieService;
         this.movieMapper = movieMapper;
         this.characterService = characterService;
         this.franchiseService = franchiseService;
     }
-
+*/
     @Operation(summary = "Get all movies")
     @ApiResponse(responseCode = "200", description = "Found all movies", content = @Content)
     @ApiResponse(responseCode = "404", description = "No movies found", content = @Content)
@@ -72,11 +74,19 @@ public class MovieController {
     @ApiResponse(responseCode = "400", description = "Bad request", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @PutMapping("{id}") // PUT
-    public ResponseEntity<Movie> update(@RequestBody Movie movie, @PathVariable int id) {
+    public ResponseEntity<MovieDTO> update(@RequestBody MovieDTO movieDTO, @PathVariable int id) {
+
+        //Movie movie = movieMapper.dtoTOMovie(movieDTO, characterService, franchiseService);
+
+        Movie movie = movieService.findById(id);
+
         // Validates if body is correct
-        if(id != movie.getId())
+        if(id != movieDTO.getId()) {
             return ResponseEntity.badRequest().build();
+        }
+        movieMapper.movieToDto(movie);
         movieService.update(movie);
+
         return ResponseEntity.noContent().build();
     }
 
