@@ -101,16 +101,18 @@ public class FranchiseServiceImp implements FranchiseService{
      */
     @Override
     public void deleteById(Integer id) {
+
         Optional<Franchise> optionalFranchise = franchiseRepository.findById(id);
 
         if (optionalFranchise.isPresent()) {
             Franchise franchiseDelete = optionalFranchise.get();
             Set<Movie> movies = franchiseDelete.getMovies();
+
             for (Movie movie : movies) {
                 movie.setFranchise(null);
             }
+             franchiseRepository.deleteById(id);
 
-            franchiseRepository.deleteById(id);
         } else {
             throw new RuntimeException("No franchise exist to delete");
         }

@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.exception.DataException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -133,12 +134,18 @@ public class FranchiseController {
 
 
     @Operation(summary="Delete a franchise")
-    @ApiResponse(responseCode = "204", description = "Deleted a franchise",content = @Content)
+    @ApiResponse(responseCode = "200", description = "Deleted a franchise",content = @Content)
     @ApiResponse(responseCode = "404", description = "No franchise found", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @DeleteMapping("{id}") // DELETE
-    public ResponseEntity<FranchiseDTO> delete(@PathVariable int id) {
-        franchiseService.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> delete(@PathVariable int id) {
+        try{
+            franchiseService.deleteById(id);
+            return ResponseEntity.ok().build();
+        }catch (DataException e){
+            return ResponseEntity.notFound().build();
+        }
+
+
     }
 }
