@@ -89,7 +89,6 @@ public class FranchiseController {
     }
 
 
-    //TODO: Get all movies from a franchise
     //Get all movies from a franchise
     @Operation(summary = "Get all movies from a franchise")
     @ApiResponse(responseCode = "200", description = "Found all movies from a franchise",content = @Content)
