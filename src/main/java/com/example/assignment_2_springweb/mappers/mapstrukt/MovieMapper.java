@@ -4,9 +4,14 @@ import com.example.assignment_2_springweb.model.Characters;
 import com.example.assignment_2_springweb.model.Franchise;
 import com.example.assignment_2_springweb.model.Movie;
 import com.example.assignment_2_springweb.model.dtos.MovieDTO;
+import com.example.assignment_2_springweb.services.character.CharacterService;
+import com.example.assignment_2_springweb.services.franchise.FranchiseService;
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
+
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,8 +20,9 @@ public interface MovieMapper {
 
     //movie to dto
     @Mapping(source = "characters", target = "characters", qualifiedByName = "charactersConverter")
-    @Mapping(source = "franchise", target = "franchise",qualifiedByName = "franchiseConverter")
-    MovieDTO  movieToDto(Movie movie);
+    @Mapping(source = "franchise", target = "franchise", qualifiedByName = "franchiseConverter")
+    MovieDTO movieToDto(Movie movie);
+
 
     @Named("charactersConverter")
     default Set<Integer> charactersConverter(Set<Characters> characters) {
@@ -30,13 +36,32 @@ public interface MovieMapper {
 
     @Named("franchiseConverter")
     default Integer franchiseConverter(Franchise franchise) {
-        return (franchise != null) ? franchise.getId() : -1;
+        return (franchise != null) ? franchise.getId() : null;
     }
 
-   default int map(Franchise value) {
+    default int map(Franchise value) {
         return value.getId();
     }
 
+    @Mapping(source = "franchise", target = "franchise", qualifiedByName = "mapIntToFranchise")
+    @Mapping(source = "characters", target = "characters", qualifiedByName = "charactersConverterIntToCharacters")
+    Movie dtoTOMovie(MovieDTO movieDTO, @Context CharacterService characterService, @Context FranchiseService franchiseService) ;
 
+    @Named("charactersConverterIntToCharacters")
+    default Set<Characters> charactersConverterIntToCharacters(Set<Integer> characters, @Context CharacterService characterService) {
+        Set<Characters> charactersSet = new HashSet<>();
+
+        for (Integer characterID : characters) {
+            Characters character = characterService.getById(characterID);
+            charactersSet.add(character);
+        }
+
+        return charactersSet;
+    }
+
+    @Named("mapIntToFranchise")
+    default Franchise mapFranchise(Integer id, @Context FranchiseService franchiseServiceImp) {
+        return franchiseServiceImp.findById(id);
+    }
 
 }

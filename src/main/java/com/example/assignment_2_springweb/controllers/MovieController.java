@@ -2,53 +2,52 @@ package com.example.assignment_2_springweb.controllers;
 
 import com.example.assignment_2_springweb.mappers.mapstrukt.MovieMapper;
 import com.example.assignment_2_springweb.model.Movie;
+import com.example.assignment_2_springweb.model.dtos.CharacterDTO;
 import com.example.assignment_2_springweb.model.dtos.MovieDTO;
+import com.example.assignment_2_springweb.services.character.CharacterService;
+import com.example.assignment_2_springweb.services.franchise.FranchiseService;
 import com.example.assignment_2_springweb.services.movie.MovieService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
-
+@RequiredArgsConstructor
 @RequestMapping(path = "movies")
 public class MovieController {
 
     private final MovieService movieService;
-
-/*    @Autowired*/
     private final MovieMapper movieMapper;
+    private final CharacterService characterService;
+    private final FranchiseService franchiseService;
 
-    public MovieController(MovieService movieService, MovieMapper movieMapper) {
+   /* public MovieController(MovieService movieService, MovieMapper movieMapper, CharacterService characterService, FranchiseService franchiseService) {
         this.movieService = movieService;
-        this.movieMapper= movieMapper;
+        this.movieMapper = movieMapper;
+        this.characterService = characterService;
+        this.franchiseService = franchiseService;
     }
-
+*/
     @Operation(summary = "Get all movies")
     @ApiResponse(responseCode = "200", description = "Found all movies", content = @Content)
     @ApiResponse(responseCode = "404", description = "No movies found", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @GetMapping // GET
-    public ResponseEntity<Collection<Movie>> getAll() {
+    public ResponseEntity<Collection<MovieDTO>> getAll() {
         Collection<Movie> movies = movieService.findAll();
-        Collection<MovieDTO> moviesDTOS = new  ArrayList<>();
-
-        for (Movie movie : movies) {
-            moviesDTOS.add(movieMapper.movieToDto(movie));
-        }
-
-
-
-
-
-        return new ResponseEntity<>(movies, HttpStatus.OK);
+        Collection<MovieDTO> movieDTOs = movies.stream()
+                .map(movieMapper::movieToDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(movieDTOs);
     }
 
     @Operation(summary = "Get a movie by id")
@@ -56,21 +55,22 @@ public class MovieController {
     @ApiResponse(responseCode = "404", description = "No movie found", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @GetMapping("{id}") // GET:
-    public ResponseEntity<Movie> getById(@PathVariable Integer id) {
-        return ResponseEntity.ok(movieService.findById(id));
+    public ResponseEntity<MovieDTO> getById(@PathVariable Integer id) {
+        return ResponseEntity.ok(movieMapper.movieToDto(movieService.findById(id)));
     }
 
-    // TODO look up raw use of ResponseEntity
     @Operation(summary = "Add a new movie")
     @ApiResponse(responseCode = "201", description = "Created a new movie", content = @Content)
     @ApiResponse(responseCode = "400", description = "Bad request", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @PostMapping // POST
-    public ResponseEntity add(@RequestBody Movie movie) {
-        Movie mov = movieService.add(movie);
-        URI location = URI.create("movies/" + mov.getId());
-        return ResponseEntity.created(location).build();
-        // return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity add(@RequestBody MovieDTO newMovieDTO) {
+        Movie movie = movieMapper.dtoTOMovie(newMovieDTO, characterService, franchiseService);
+        Movie movieSave = movieService.add(movie);
+       // MovieDTO returnDTO = movieMapper.movieToDto(movieSave);
+        //URI location = URI.create("movies/" + mov.getId());
+      //  return ResponseEntity.created(location).build();
+         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(summary = "Update a movie")
@@ -78,12 +78,29 @@ public class MovieController {
     @ApiResponse(responseCode = "400", description = "Bad request", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @PutMapping("{id}") // PUT
-    public ResponseEntity<Movie> update(@RequestBody Movie movie, @PathVariable int id) {
+    public ResponseEntity<MovieDTO> update(@RequestBody MovieDTO movieDTO, @PathVariable int id) {
+
+        //Movie movie = movieMapper.dtoTOMovie(movieDTO, characterService, franchiseService);
+
+        Movie movie = movieService.findById(id);
+
         // Validates if body is correct
-        if(id != movie.getId())
+        if(id != movieDTO.getId()) {
             return ResponseEntity.badRequest().build();
+        }
+        movieMapper.movieToDto(movie);
         movieService.update(movie);
+
         return ResponseEntity.noContent().build();
+    }
+    @Operation(summary = "Update characters in movie")
+    @ApiResponse(responseCode = "204", description = "Updated the movie", content = @Content)
+    @ApiResponse(responseCode = "400", description = "Bad request", content = @Content)
+    @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
+    @PutMapping("{id}/characters") // PUT
+    public Set<MovieDTO> updateCharactersInMovie(@RequestBody Set<Integer> charactersId, @PathVariable int id) {
+
+        return null;
     }
 
     @Operation(summary = "Delete a movie")
@@ -91,7 +108,7 @@ public class MovieController {
     @ApiResponse(responseCode = "404", description = "No movie found", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @DeleteMapping("{id}") // DELETE
-    public ResponseEntity<Movie> delete(@PathVariable int id) {
+    public ResponseEntity<MovieDTO> delete(@PathVariable int id) {
         movieService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
