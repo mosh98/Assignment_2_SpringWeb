@@ -82,16 +82,25 @@ public class MovieServiceImp implements MovieService{
         Movie movie = movieRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Not found"));
 
+
+        //get characters using ids
         Set<Characters> characters = new HashSet<>();
         for (Integer characterId : characterIds) {
             Characters character = characterRepository.findById(characterId)
                     .orElseThrow(() -> new RuntimeException("Not found"));
             characters.add(character);
         }
+        if(characters.isEmpty()) {
+            throw new RuntimeException("No characters found");
+        }
+        Set<Characters> currentCast = movie.getCharacters(); //get old characts
+        characters.forEach(character -> currentCast.add(character)); //add the new characters
 
-        movie.setCharacters(characters);
+        movie.setCharacters(currentCast); //to da loo
 
-        return characters;
+        //movieRepository.save(movie);
+
+        return movie.getCharacters();
     }
 
 }

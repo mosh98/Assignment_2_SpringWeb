@@ -101,6 +101,15 @@ public class MovieController {
     @PutMapping("{id}/characters") // PUT
     public Set<MovieDTO> updateCharactersInMovie(@RequestBody Set<Integer> charactersId, @PathVariable int id) {
 
+        movieService.updateCharactersInMovie( id,charactersId);
+        /*
+        Movie movie = movieService.findById(id);
+        Set<CharacterDTO> characters = charactersId.stream()
+                .map(characterService::findById)
+                .map(characterMapper::characterToDto)
+                .collect(Collectors.toSet());
+
+        movie.getCharacters().addAll(characters);*/
         return null;
     }
 
@@ -109,9 +118,13 @@ public class MovieController {
     @ApiResponse(responseCode = "404", description = "No movie found", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @DeleteMapping("{id}") // DELETE
-    public ResponseEntity<MovieDTO> delete(@PathVariable int id) {
-        movieService.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> delete(@PathVariable int id) {
+        try {
+            movieService.deleteById(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }
