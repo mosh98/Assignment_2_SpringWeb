@@ -13,13 +13,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
 @Mapper(componentModel = "spring")
 public interface CharacterMapper {
-
-
-
-
 
     @Mapping(source = "movie", target = "movie", qualifiedByName = "moviesConverter")
     CharacterDTO toCharacterDto(Characters characters);
