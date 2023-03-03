@@ -1,7 +1,6 @@
 package com.example.assignment_2_springweb.controllers;
 import com.example.assignment_2_springweb.mappers.mapstrukt.CharacterMapper;
 import com.example.assignment_2_springweb.model.Characters;
-import com.example.assignment_2_springweb.model.Movie;
 import com.example.assignment_2_springweb.model.dtos.CharacterDTO;
 import com.example.assignment_2_springweb.services.character.CharacterService;
 import com.example.assignment_2_springweb.services.movie.MovieService;
@@ -14,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController

@@ -104,7 +104,6 @@ public class FranchiseController {
 
 
     //Get all characters from a franchise
-
     @Operation(summary = "Get all characters from a franchise")
     @ApiResponse(responseCode = "200", description = "Found all characters from a franchise",content = @Content)
     @ApiResponse(responseCode = "404", description = "No characters found", content = @Content)

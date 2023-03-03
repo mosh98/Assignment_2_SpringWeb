@@ -30,10 +30,10 @@ public interface MovieMapper {
 
     @Named("franchiseConverter")
     default Integer franchiseConverter(Franchise franchise) {
-        return franchise.getId();
+        return (franchise != null) ? franchise.getId() : -1;
     }
 
-    default int map(Franchise value) {
+   default int map(Franchise value) {
         return value.getId();
     }
 
