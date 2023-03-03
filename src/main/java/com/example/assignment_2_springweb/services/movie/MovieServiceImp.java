@@ -63,8 +63,5 @@ public class MovieServiceImp implements MovieService{
         return movieRepository.existsById(id);
     }
 
-/*    @Override
-    public Collection<Movie> findAllByTitle(String title) {
-        return movieRepository.findAll(title);
-    }*/
+
 }
