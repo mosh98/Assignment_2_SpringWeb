@@ -13,4 +13,5 @@ public interface MovieService extends CrudService<Movie, Integer> {
     Set<Characters> updateCharactersInMovie(Integer id, Set<Integer> characterIds);
 
 
+    Set<Characters> getCharactersByMovieId(int id);
 }

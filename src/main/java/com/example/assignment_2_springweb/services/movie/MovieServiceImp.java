@@ -103,4 +103,17 @@ public class MovieServiceImp implements MovieService{
         return movie.getCharacters();
     }
 
+    @Override
+    public Set<Characters> getCharactersByMovieId(int id) {
+        //find movie
+        Movie movie = movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+
+        //get characters
+        Set<Characters> characters = movie.getCharacters();
+        if(characters.isEmpty()) {
+            throw new RuntimeException("No characters found");
+        }
+        return characters;
+    }
+
 }
