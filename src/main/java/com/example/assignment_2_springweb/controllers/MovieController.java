@@ -78,20 +78,21 @@ public class MovieController {
     @ApiResponse(responseCode = "400", description = "Bad request", content = @Content)
     @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     @PutMapping("{id}") // PUT
-    public ResponseEntity<MovieDTO> update(@RequestBody MovieDTO movieDTO, @PathVariable int id) {
+    @ResponseStatus(value = HttpStatus.OK)
+    public MovieDTO update(@RequestBody MovieDTO movieDTO, @PathVariable int id) {
 
-        //Movie movie = movieMapper.dtoTOMovie(movieDTO, characterService, franchiseService);
 
         Movie movie = movieService.findById(id);
 
-        // Validates if body is correct
-        if(id != movieDTO.getId()) {
-            return ResponseEntity.badRequest().build();
+        // Validates if id is correct
+        if(id != movie.getId()){
+            throw new IllegalArgumentException("Movie ID must match the ID in the URL");
         }
-        movieMapper.movieToDto(movie);
-        movieService.update(movie);
+        //movieMapper.movieToDto(movie);
+        Movie mov = movieMapper.dtoTOMovie(movieDTO, characterService, franchiseService);
 
-        return ResponseEntity.noContent().build();
+        //return
+        return movieMapper.movieToDto(movieService.update(mov));
     }
     @Operation(summary = "Update characters in movie")
     @ApiResponse(responseCode = "204", description = "Updated the movie", content = @Content)

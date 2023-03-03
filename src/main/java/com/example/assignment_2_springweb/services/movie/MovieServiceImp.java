@@ -41,8 +41,8 @@ public class MovieServiceImp implements MovieService{
 
     @Override
     public Movie update(Movie entity) {
-        //TODO is this right?
-        return movieRepository.save(entity);
+
+        return movieRepository.saveAndFlush(entity);
     }
 
     @Override
