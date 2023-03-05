@@ -23,7 +23,6 @@ public class MovieServiceImp implements MovieService{
         this.characterRepository = characterRepository;
     }
 
-    // TODO add exeption lesson https://noroff-accelerate.gitlab.io/java/course-notes/_rework/module3/02_SpringWeb/
     @Override
     public Movie findById(Integer id) {
         return movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie not found"));
@@ -54,10 +53,7 @@ public class MovieServiceImp implements MovieService{
                 // Set relationships to null, so we can delete without referential problems
                 Movie movieToDelete = optionalMovie.get();
                 movieToDelete.setFranchise(null);
-                //TODO Fix to set only movie_id to Null not clear all - Hibernate: delete from movie_characters where movie_id=?- not right i think
-                //movieToDelete.setCharacters(null);
 
-              // movieToDelete.getCharacters().forEach(s -> s.setMovie(null));
                 movieToDelete.getCharacters().forEach(character -> character.getMovie().remove(movieToDelete));
                 movieRepository.deleteById(id);
             } else {
@@ -93,12 +89,10 @@ public class MovieServiceImp implements MovieService{
         if(characters.isEmpty()) {
             throw new RuntimeException("No characters found");
         }
-        Set<Characters> currentCast = movie.getCharacters(); //get old characts
+        Set<Characters> currentCast = movie.getCharacters(); //get old characters
         characters.forEach(character -> currentCast.add(character)); //add the new characters
 
         movie.setCharacters(currentCast); //to da loo
-
-        //movieRepository.save(movie);
 
         return movie.getCharacters();
     }

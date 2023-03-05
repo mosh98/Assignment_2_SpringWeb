@@ -13,7 +13,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 public class Characters {
-    //TODO: Check if the movie_charatcer table only contains unique rows.
 
     /**
      * Character

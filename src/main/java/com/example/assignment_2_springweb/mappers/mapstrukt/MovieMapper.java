@@ -63,7 +63,6 @@ public interface MovieMapper {
     default Franchise mapFranchise(Integer id, @Context FranchiseService franchiseServiceImp) {
         //if id == 0 then return null
         return (id == 0) ? null : franchiseServiceImp.findById(id);
-        //return franchiseServiceImp.findById(id);
     }
 
 }

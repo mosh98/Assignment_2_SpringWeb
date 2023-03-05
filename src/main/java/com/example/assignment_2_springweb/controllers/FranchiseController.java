@@ -28,7 +28,6 @@ public class FranchiseController {
   private final MovieService movieService;
   private final FranchiseMapper franchiseMapper;
 
-
     @Operation(summary = "Get all franchises")
     @ApiResponse(responseCode = "200", description = "Found all franchises",content = @Content)
     @ApiResponse(responseCode = "404", description = "No franchises found", content = @Content)
@@ -76,7 +75,6 @@ public class FranchiseController {
         return returnDto;
     }
 
-    // TODO: Movies not updating
     @Operation(summary="Update a franchise")
     @PutMapping("{id}") // PUT
     @ResponseStatus(HttpStatus.OK)
@@ -87,7 +85,6 @@ public class FranchiseController {
 
         return franchiseMapper.franchiseToDto(franchiseService.update( franchiseMapper.dtoToFranchise(franchise,movieService) ));
     }
-
 
     //Get all movies from a franchise
     @Operation(summary = "Get all movies from a franchise")
@@ -129,8 +126,6 @@ public class FranchiseController {
         return franchiseMapper.franchiseToDto(franchise);
     }
 
-
-
     @Operation(summary="Delete a franchise")
     @ApiResponse(responseCode = "200", description = "Deleted a franchise",content = @Content)
     @ApiResponse(responseCode = "404", description = "No franchise found", content = @Content)
@@ -143,7 +138,5 @@ public class FranchiseController {
         }catch (DataException e){
             return ResponseEntity.notFound().build();
         }
-
-
     }
 }

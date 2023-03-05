@@ -138,7 +138,6 @@ public class FranchiseServiceImp implements FranchiseService{
     public Set<MovieDTO> findAllMovies(Integer id) {
 
         // get movie ids using franchise id
-        //franchiseRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
         Set<Movie> franchiseSet =  franchiseRepository.findById(id).get().getMovies();
 
         // convert to movieDTO
@@ -168,7 +167,6 @@ public class FranchiseServiceImp implements FranchiseService{
             Set<Characters> charactersInCurrentMovie = movie.getCharacters();
 
             for (Characters character : charactersInCurrentMovie) {
-                //System.out.println(character.getFullName());
                 CharacterDTO xx =  characterMapper.toCharacterDto(character);
                 System.out.println(xx.getFullName());
                 characters.add(xx);

@@ -27,7 +27,6 @@ public class Movie {
     private Integer release;    // Integer can be NULL
     @Column(name = "director", length = 50, nullable = false)
     private String director;
-    // Picture (URL to a movie poster) TODO should it be picture_URL or poster_URL
     @Column(name = "poster_URL", length = 100)
     private String poster;
     @Column(name = "trailer_link", length = 100)
@@ -38,13 +37,11 @@ public class Movie {
     @JoinTable(name = "movie_characters", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "character_id"))
     private Set<Characters> characters;
 
-
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "franchise_id")
     private Franchise franchise;
 
-    // TODO change method name
     @JsonGetter("franchise")
     public Integer jsonGetProfessor() {
         if(franchise != null)
@@ -52,7 +49,6 @@ public class Movie {
         return null;
     }
 
-    // TODO change method name
     @JsonGetter("characters")
     public List<Integer> jsonGetSubjects() {
         if(characters != null)
@@ -60,20 +56,5 @@ public class Movie {
                     .collect(Collectors.toList());
         return null;
     }
-
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", genre='" + genre + '\'' +
-                ", release=" + release +
-                ", director='" + director + '\'' +
-                ", poster='" + poster + '\'' +
-                ", trailer='" + trailer + '\'' +
-                ", franchise=" + franchise +
-                '}';
-    }
-
 
 }

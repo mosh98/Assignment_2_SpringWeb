@@ -16,20 +16,11 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface FranchiseMapper {
 
-
-
-
     @Mapping(source = "movies", target = "movies", qualifiedByName = "moviesConverter")
     FranchiseDTO franchiseToDto(Franchise franchise);
 
     @Mapping(source = "movies", target = "movies", qualifiedByName = "moviesConverterIntToMovies")
     Franchise dtoToFranchise(FranchiseDTO franchiseDTO, @Context MovieService movieService);
-
-
-    //Franchise
-
-
-
 
     @Named("moviesConverter")
     default Set<Integer> moviesConverter(Set<Movie> movies) {

@@ -20,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -35,7 +34,6 @@ public class MovieController {
     private final MovieMapper movieMapper;
     private final CharacterService characterService;
     private final FranchiseService franchiseService;
-
     private final CharacterMapper characterMapper;
 
     @Operation(summary = "Get all movies")

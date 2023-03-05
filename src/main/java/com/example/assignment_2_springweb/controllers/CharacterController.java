@@ -26,7 +26,6 @@ public class CharacterController {
     private final MovieService movieService;
 
     //get
-
     @Operation(summary = "Get all characters",
             description = "Get all characters, return a list with Character DTO objects")
     @ApiResponse(responseCode = "200", description = "Characters found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CharacterDTO.class)))
@@ -39,7 +38,6 @@ public class CharacterController {
         return charList.stream().map(characterMapper::toCharacterDto).collect(Collectors.toList());
     }
 
-    //
     @Operation(summary = "Get character by id",
             description = "Get character by id, return a Character DTO object")
     @ApiResponse(responseCode = "200", description = "Character found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CharacterDTO.class)))
@@ -51,7 +49,6 @@ public class CharacterController {
     public CharacterDTO getById(@PathVariable int id){
         return characterMapper.toCharacterDto(characterServiceImpl.getById(id));
     }
-
 
     //create
     @Operation(summary = "Create character",
@@ -76,8 +73,6 @@ public class CharacterController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CharacterDTO updateCharacter(@PathVariable Integer id, @RequestBody CharacterDTO characterDTO) {
-        //TODO: update movie? think it through......
-
 
         return characterServiceImpl.updateCharacter(id,characterDTO);
     }
@@ -93,6 +88,5 @@ public class CharacterController {
 
         return characterServiceImpl.delete(id);
     }
-
 
 }
